@@ -1,0 +1,8 @@
+docker compose build
+docker compose create
+docker compose start other
+
+docker compose run lanzador /bin/bash
+
+ansible-playbook --ask-vault-pass cisco.yml
+cat 10.5.0.2.ios

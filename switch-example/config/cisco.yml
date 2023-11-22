@@ -1,0 +1,22 @@
+---
+- hosts: other
+  vars_files:
+    - vault.yml
+  gather_facts: false
+#  connection: ansible.netcommon.network_cli
+
+
+  tasks:
+    - name: Comandos show
+      ios_command:
+        commands:
+#        - show run
+#        - show ip route
+#        - show ip eigrp neighbors
+        - show version
+      register: config
+
+    - name: Guarda en carpeta local
+      copy:
+        content: "{{ config.stdout | replace('\\n', '\n') }}"
+        dest: "{{ inventory_hostname }}.ios"

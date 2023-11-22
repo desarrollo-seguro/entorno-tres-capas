@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  other:
+    image: "internap/fake-switches:latest"
+    ports: 
+      - 32770:22
+    environment:
+      - SWITCH_MODEL=cisco_generic
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+  lanzador:
+    build: .
+    volumes:
+      - ./vault.yml:/app/vault.yml
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
