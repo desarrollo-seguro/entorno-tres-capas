@@ -1,0 +1,12 @@
+# Use Oracle Linux 9 como base
+FROM oraclelinux:9
+
+# Instala BIND
+RUN yum install -y bind bind-utils
+
+# Expone el puerto DNS
+EXPOSE 53/udp
+EXPOSE 53/tcp
+
+# Inicia BIND
+CMD ["/usr/sbin/named", "-g"]

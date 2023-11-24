@@ -15,6 +15,7 @@ services:
     networks:
       bastion:
         ipv4_address: 172.28.0.2
+    dns: 172.28.0.5
 
   docker-ssh:
     image: ssh
@@ -27,6 +28,7 @@ services:
     networks:
       bastion:
         ipv4_address: 172.28.0.3
+    dns: 172.28.0.5
 
   web-server:
     image: nginx:latest
@@ -38,6 +40,24 @@ services:
     networks:
       bastion:
         ipv4_address: 172.28.0.4
+    dns: 172.28.0.5
+
+  dns-server:
+    image: dns-server
+    container_name: dns-server
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - $PWD/dns/named.conf:/etc/named.conf
+      - $PWD/dns/named.rfc1912.zones:/etc/named.rfc1912.zones
+      - $PWD/dns/db.example.com:/var/named/db.example.com
+      - $PWD/dns/named.localhost:/var/named/named.localhost
+      - $PWD/dns/named.loopback:/var/named/named.loopback
+    networks:
+      bastion:
+        ipv4_address: 172.28.0.5
+    dns: 172.28.0.5
 
 networks:
   bastion:
