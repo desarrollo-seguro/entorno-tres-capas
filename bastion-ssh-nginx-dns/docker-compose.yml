@@ -3,8 +3,6 @@ services:
   bastion:
     image: ssh
     container_name: bastion
-    hostname: bastion
-    restart: unless-stopped
     expose:
       - 22/tcp
     ports:
@@ -21,8 +19,6 @@ services:
   docker-ssh:
     image: ssh
     container_name: docker-ssh
-    hostname: docker-ssh
-    restart: unless-stopped
     expose:
       - 22/tcp
     volumes:
@@ -31,6 +27,17 @@ services:
     networks:
       bastion:
         ipv4_address: 172.28.0.3
+
+  web-server:
+    image: nginx:latest
+    container_name: web-server
+    volumes:
+      - ./html:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    networks:
+      bastion:
+        ipv4_address: 172.28.0.4
 
 networks:
   bastion:
